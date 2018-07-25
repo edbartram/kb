@@ -1,0 +1,43 @@
+<!---
+	DESCRIPTION:
+		In Adobe Coldfusion 8, AJAX support was added. As part of that, a JavaScript function ColdFusion.navigate() was added.
+		While it is not recommended to use this in greenfield development, it is important to be aware of how this works for when it is encountered supporting legacy code.
+
+	REQUIREMENTS:
+		<cfajaximport>
+
+	USAGE:
+		ColdFusion.navigate( URL [, container, callbackhandler, errorhandler, httpMethod, formId] );
+
+	EXAMPLE:
+--->
+<cfparam name="url.action" default="">
+
+<html>
+	<head>
+		<!--- includes JavaScript ColdFusion object --->
+		<cfajaximport>
+
+		<script>
+			function click( go ) {
+				/* Makes AJAX call to URL in go and updates content in #container with returned content */
+				ColdFusion.navigate( go, "container" );
+			}
+		</script>
+	</head>
+
+	<body>
+		<!--- returns content for ColdFusion.navigate() AJAX call --->
+		<cfif action is "click">
+			Clicked!
+
+		<!--- otherwise we display the main content --->
+		<cfelse>
+			<!--- this is the container whose content will be replaced when ColdFusion.navigate() is called --->
+			<span id="container">
+				<!--- action helps us to identify whether to display full page's content or just what is returned to ColdFusion.navigate() AJAX call. We could just as easily specified an entirely different URL. --->
+				<cfoutput><a href="javascript:click( '#cgi.HTTP_URL#?action=click' );">Click me</a></cfoutput>
+			</span>
+		</cfif>
+	</body>
+</html>
